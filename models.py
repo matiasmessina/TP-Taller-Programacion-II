@@ -12,7 +12,10 @@ class Pizza(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     person_id = db.Column(db.Integer, db.ForeignKey("person.id"))
     content = db.Column(db.String, nullable=False)
+    price = db.Column(db.Float, nullable=False)
+    size = db.Column(db.String(10), nullable=False)
     timestamp = db.Column(db.DateTime, default=ahora, onupdate=ahora)
+    
 
 
 class PizzaSchema(ma.SQLAlchemyAutoSchema):
@@ -52,5 +55,6 @@ class PersonSchema(ma.SQLAlchemyAutoSchema):
 
 
 pizza_schema = PizzaSchema()
+pizzas_schema = PizzaSchema(many=True) 
 person_schema = PersonSchema()
 people_schema = PersonSchema(many=True)

@@ -127,6 +127,23 @@ paths:
         "404":
           description: "No existe una persona con ese apellido"
   /pizzas:
+    get:
+      operationId: "pizzas.read_all"
+      tags:
+        - Pizzas
+      summary: "Lista todas las pizzas, opcionalmente filtradas por persona"
+      parameters:
+        - name: "person_id"
+          in: query
+          required: false
+          description: "Si se envía, devuelve solo las pizzas de esa persona"
+          schema:
+            type: "integer"
+      responses:
+        "200":
+          description: "Lista de pizzas leída correctamente"
+        "404":
+          description: "No existe una persona con ese person_id"
     post:
       operationId: "pizzas.create"
       tags:
@@ -192,3 +209,29 @@ paths:
           description: "Pizza borrada correctamente"
         "404":
           description: "No existe una pizza con ese ID"
+  /people/{lname}/pizzas:
+    get:
+      operationId: "people.read_pizzas"
+      tags:
+        - People
+      summary: "Lista las pizzas de una persona"
+      parameters:
+        - $ref: "#/components/parameters/lname"
+      responses:
+        "200":
+          description: "Pizzas de la persona leídas correctamente"
+        "404":
+          description: "No existe una persona con ese apellido"
+  /people/{lname}/resumen:
+    get:
+      operationId: "people.read_resumen"
+      tags:
+        - People
+      summary: "Resumen de consumo de una persona"
+      parameters:
+        - $ref: "#/components/parameters/lname"
+      responses:
+        "200":
+          description: "Resumen generado correctamente"
+        "404":
+          description: "No existe una persona con ese apellido"

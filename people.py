@@ -1,6 +1,6 @@
 from config import db
 from flask import abort
-from models import Person, people_schema, person_schema
+from models import Person, people_schema, person_schema, pizzas_schema
 
 
 def read_all():
@@ -52,3 +52,27 @@ def delete(lname):
         return "", 204
     else:
         abort(404, f"Person with last name {lname} not found")
+
+def read_pizzas(lname):
+    """Devuelve solo las pizzas de una persona."""
+    person = Person.query.filter(Person.lname == lname).one_or_none()
+
+    if person is None:
+        abort(404, f"No existe una persona con el apellido {lname}")
+
+    return pizzas_schema.dump(person.pizzas)
+
+
+def read_resumen(lname):
+    """Devuelve cuántas pizzas pidió una persona y cuánto gastó en total."""
+    person = Person.query.filter(Person.lname == lname).one_or_none()
+
+    if person is None:
+        abort(404, f"No existe una persona con el apellido {lname}")
+
+    return {
+        "lname": person.lname,
+        "fname": person.fname,
+        "cantidad_pizzas": len(person.pizzas),
+        "total_gastado": round(sum(pizza.price for pizza in person.pizzas), 2),
+    }

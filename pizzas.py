@@ -1,7 +1,20 @@
 from config import db
 from flask import abort
-from models import Pizza, Person, pizza_schema
+from models import Pizza, Person, pizza_schema, pizzas_schema
 
+
+def read_all(person_id=None):
+    """Devuelve todas las pizzas, o solo las de una persona si llega person_id."""
+    if person_id is None:
+        pizzas = Pizza.query.order_by(Pizza.timestamp.desc()).all()
+        return pizzas_schema.dump(pizzas)
+
+    person = db.session.get(Person, person_id)
+
+    if person is None:
+        abort(404, f"No existe una persona con el ID {person_id}")
+
+    return pizzas_schema.dump(person.pizzas)
 
 def read_one(pizza_id):
     pizza = db.session.get(Pizza, pizza_id)

@@ -31,6 +31,8 @@ def update(pizza_id, pizza):
     if existing_pizza:
         update_pizza = pizza_schema.load(pizza, session=db.session)
         existing_pizza.content = update_pizza.content
+        existing_pizza.price = update_pizza.price
+        existing_pizza.size = update_pizza.size
         db.session.merge(existing_pizza)
         db.session.commit()
         return pizza_schema.dump(existing_pizza), 200

@@ -13,7 +13,7 @@
     <ul>
         {% for pizza in person.pizzas %}
         <li>
-           Id-Pizza:{{ pizza.id }}   Tipo: {{ pizza.content }}
+            Id-Pizza: {{ pizza.id }} — {{ pizza.content }} ({{ pizza.size }}) — ${{ "%.2f"|format(pizza.price) }}
         </li>
         {% endfor %}
     </ul>

@@ -23,18 +23,46 @@ components:
       required:
         - person_id
         - content
+        - price
+        - size
       properties:
         person_id:
           type: "integer"
         content:
           type: "string"
+        price:
+          type: "number"
+          minimum: 0
+          exclusiveMinimum: true
+          description: "Precio de la pizza, tiene que ser mayor que 0"
+        size:
+          type: "string"
+          enum:
+            - "chica"
+            - "mediana"
+            - "grande"
+          description: "Tamaño de la pizza"
     PizzaUpdate:
       type: "object"
       required:
         - content
+        - price
+        - size
       properties:
         content:
           type: "string"
+        price:
+          type: "number"
+          minimum: 0
+          exclusiveMinimum: true
+          description: "Precio de la pizza, tiene que ser mayor que 0"
+        size:
+          type: "string"
+          enum:
+            - "chica"
+            - "mediana"
+            - "grande"
+          description: "Tamaño de la pizza"
   parameters:
     lname:
       name: "lname"

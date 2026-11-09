@@ -1,5 +1,5 @@
 from config import db
-from flask import abort, make_response
+from flask import abort
 from models import Person, people_schema, person_schema
 
 
@@ -38,7 +38,7 @@ def update(lname, person):
         existing_person.fname = update_person.fname
         db.session.merge(existing_person)
         db.session.commit()
-        return person_schema.dump(existing_person), 201
+        return person_schema.dump(existing_person), 200
     else:
         abort(404, f"Person with last name {lname} not found")
 
@@ -49,6 +49,6 @@ def delete(lname):
     if existing_person:
         db.session.delete(existing_person)
         db.session.commit()
-        return make_response(f"{lname} successfully deleted", 200)
+        return "", 204
     else:
         abort(404, f"Person with last name {lname} not found")

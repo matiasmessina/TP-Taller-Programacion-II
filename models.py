@@ -1,16 +1,18 @@
-from datetime import datetime
+from datetime import datetime, timezone
 
 from config import db, ma
 from marshmallow_sqlalchemy import fields
 
+def ahora():
+    """Fecha y hora actual en UTC, con la zona horaria explícita."""
+    return datetime.now(timezone.utc)
 
 class Pizza(db.Model):
     __tablename__ = "pizza"
     id = db.Column(db.Integer, primary_key=True)
     person_id = db.Column(db.Integer, db.ForeignKey("person.id"))
     content = db.Column(db.String, nullable=False)
-    timestamp = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow
-    )
+    timestamp = db.Column(db.DateTime, default=ahora, onupdate=ahora)
 
 
 class PizzaSchema(ma.SQLAlchemyAutoSchema):

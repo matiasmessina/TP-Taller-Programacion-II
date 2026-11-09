@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
-  title: "RP Flask REST API"
-  description: "An API about people and pizzas"
+  title: "API REST de Personas y Pizzas"
+  description: "API para administrar los clientes de una pizzería y las pizzas que pidió cada uno"
   version: "1.0.0"
 
 servers:
@@ -18,17 +18,34 @@ components:
           type: "string"
         lname:
           type: "string"
+    Pizza:
+      type: "object"
+      required:
+        - person_id
+        - content
+      properties:
+        person_id:
+          type: "integer"
+        content:
+          type: "string"
+    PizzaUpdate:
+      type: "object"
+      required:
+        - content
+      properties:
+        content:
+          type: "string"
   parameters:
     lname:
       name: "lname"
-      description: "Last name of the person to get"
+      description: "Apellido de la persona"
       in: path
       required: True
       schema:
         type: "string"
     pizza_id:
       name: "pizza_id"
-      description: "ID of the pizza"
+      description: "ID de la pizza"
       in: path
       required: true
       schema:
@@ -40,17 +57,17 @@ paths:
       operationId: "people.read_all"
       tags:
         - "People"
-      summary: "Read the list of people"
+      summary: "Lista todas las personas con sus pizzas"
       responses:
         "200":
-          description: "Successfully read people list"
+          description: "Lista de personas leída correctamente"
     post:
       operationId: "people.create"
       tags:
         - People
-      summary: "Create a person"
+      summary: "Crea una persona"
       requestBody:
-          description: "Person to create"
+          description: "Persona a crear"
           required: True
           content:
             application/json:
@@ -59,28 +76,38 @@ paths:
                 $ref: "#/components/schemas/Person"
       responses:
         "201":
-          description: "Successfully created person"
+          description: "Persona creada correctamente"
+        "400":
+          description: "Falta el apellido o el JSON es inválido"
+        "406":
+          description: "Ya existe una persona con ese apellido"
   /people/{lname}:
     get:
       operationId: "people.read_one"
       tags:
         - People
-      summary: "Read one person"
+      summary: "Trae una persona por apellido"
       parameters:
         - $ref: "#/components/parameters/lname"
       responses:
         "200":
-          description: "Successfully read person"
+          description: "Persona leída correctamente"
+        "404":
+          description: "No existe una persona con ese apellido"
     put:
       tags:
         - People
       operationId: "people.update"
-      summary: "Update a person"
+      summary: "Actualiza el nombre de una persona"
       parameters:
         - $ref: "#/components/parameters/lname"
       responses:
         "200":
-          description: "Successfully updated person"
+          description: "Persona actualizada correctamente"
+        "400":
+          description: "Falta el apellido en el cuerpo o el JSON es inválido"
+        "404":
+          description: "No existe una persona con ese apellido"
       requestBody:
         content:
           application/json:
@@ -91,71 +118,77 @@ paths:
       tags:
         - People
       operationId: "people.delete"
-      summary: "Delete a person"
+      summary: "Borra una persona y todas sus pizzas"
       parameters:
         - $ref: "#/components/parameters/lname"
       responses:
         "204":
-          description: "Successfully deleted person"
+          description: "Persona borrada correctamente"
+        "404":
+          description: "No existe una persona con ese apellido"
   /pizzas:
     post:
       operationId: "pizzas.create"
       tags:
         - Pizzas
-      summary: "Create a pizza associated with a person"
+      summary: "Crea una pizza asociada a una persona"
       requestBody:
-          description: "Pizza to create"
+          description: "Pizza a crear"
           required: True
           content:
             application/json:
               schema:
                 x-body-name: "pizza"
-                type: "object"
-                properties:
-                  person_id:
-                    type: "integer"
-                  content:
-                    type: "string"
+                $ref: "#/components/schemas/Pizza"
       responses:
         "201":
-          description: "Successfully created a pizza"
+          description: "Pizza creada correctamente"
+        "400":
+          description: "Faltan datos obligatorios o el JSON es inválido"
+        "404":
+          description: "No existe una persona con ese person_id"
   /pizzas/{pizza_id}:
     get:
       operationId: "pizzas.read_one"
       tags:
         - Pizzas
-      summary: "Read one pizza"
+      summary: "Trae una pizza por ID"
       parameters:
         - $ref: "#/components/parameters/pizza_id"
       responses:
         "200":
-          description: "Successfully read one pizza"
+          description: "Pizza leída correctamente"
+        "404":
+          description: "No existe una pizza con ese ID"
     put:
       tags:
         - Pizzas
       operationId: "pizzas.update"
-      summary: "Update a pizza"
+      summary: "Actualiza el contenido de una pizza"
       parameters:
         - $ref: "#/components/parameters/pizza_id"
       responses:
         "200":
-          description: "Successfully updated pizza"
+          description: "Pizza actualizada correctamente"
+        "400":
+          description: "Faltan datos obligatorios o el JSON es inválido"
+        "404":
+          description: "No existe una pizza con ese ID"
       requestBody:
         content:
           application/json:
             schema:
               x-body-name: "pizza"
-              type: "object"
-              properties:
-                content:
-                  type: "string"
+              $ref: "#/components/schemas/PizzaUpdate"
     delete:
       tags:
         - Pizzas
       operationId: "pizzas.delete"
-      summary: "Delete a pizza"
+      summary: "Borra una pizza"
       parameters:
         - $ref: "#/components/parameters/pizza_id"
       responses:
         "204":
-          description: "Successfully deleted pizza"
+          description: "Pizza borrada correctamente"
+        "404":
+          description: "No existe una pizza con ese ID"

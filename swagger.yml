@@ -18,6 +18,7 @@ components:
           type: "string"
         lname:
           type: "string"
+          minLength: 1
     Pizza:
       type: "object"
       required:
@@ -30,6 +31,7 @@ components:
           type: "integer"
         content:
           type: "string"
+          minLength: 1
         price:
           type: "number"
           minimum: 0
@@ -51,6 +53,7 @@ components:
       properties:
         content:
           type: "string"
+          minLength: 1
         price:
           type: "number"
           minimum: 0

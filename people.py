@@ -9,7 +9,12 @@ def read_all():
 
 
 def create(person):
-    lname = person.get("lname")
+    lname = (person.get("lname") or "").strip()
+
+    if not lname:
+        abort(400, "El apellido no puede estar vacío")
+
+    person["lname"] = lname
     existing_person = Person.query.filter(Person.lname == lname).one_or_none()
 
     if existing_person is None:
@@ -18,7 +23,7 @@ def create(person):
         db.session.commit()
         return person_schema.dump(new_person), 201
     else:
-        abort(406, f"Person with last name {lname} already exists")
+        abort(406, f"Ya existe una persona con el apellido {lname}")
 
 
 def read_one(lname):
@@ -27,7 +32,7 @@ def read_one(lname):
     if person is not None:
         return person_schema.dump(person)
     else:
-        abort(404, f"Person with last name {lname} not found")
+        abort(404, f"No existe una persona con el apellido {lname}")
 
 
 def update(lname, person):
@@ -40,7 +45,7 @@ def update(lname, person):
         db.session.commit()
         return person_schema.dump(existing_person), 200
     else:
-        abort(404, f"Person with last name {lname} not found")
+        abort(404, f"No existe una persona con el apellido {lname}")
 
 
 def delete(lname):
@@ -51,7 +56,7 @@ def delete(lname):
         db.session.commit()
         return "", 204
     else:
-        abort(404, f"Person with last name {lname} not found")
+        abort(404, f"No existe una persona con el apellido {lname}")
 
 def read_pizzas(lname):
     """Devuelve solo las pizzas de una persona."""

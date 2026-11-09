@@ -22,7 +22,7 @@ def read_one(pizza_id):
     if pizza is not None:
         return pizza_schema.dump(pizza)
     else:
-        abort(404, f"Pizza with ID {pizza_id} not found")
+        abort(404, f"No existe una pizza con el ID {pizza_id}")
 
 
 def update(pizza_id, pizza):
@@ -37,7 +37,7 @@ def update(pizza_id, pizza):
         db.session.commit()
         return pizza_schema.dump(existing_pizza), 200
     else:
-        abort(404, f"Pizza with ID {pizza_id} not found")
+        abort(404, f"No existe una pizza con el ID {pizza_id}")
 
 
 def delete(pizza_id):
@@ -48,10 +48,16 @@ def delete(pizza_id):
         db.session.commit()
         return "", 204
     else:
-        abort(404, f"Pizza with ID {pizza_id} not found")
+        abort(404, f"No existe una pizza con el ID {pizza_id}")
 
 
 def create(pizza):
+    content = (pizza.get("content") or "").strip()
+
+    if not content:
+        abort(400, "La descripción de la pizza no puede estar vacía")
+
+    pizza["content"] = content
     person_id = pizza.get("person_id")
     person = db.session.get(Person, person_id)
 
@@ -61,4 +67,4 @@ def create(pizza):
         db.session.commit()
         return pizza_schema.dump(new_pizza), 201
     else:
-        abort(404, f"Person not found for ID: {person_id}")
+        abort(404, f"No existe una persona con el ID {person_id}")

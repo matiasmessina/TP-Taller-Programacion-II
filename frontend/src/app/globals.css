@@ -1,0 +1,56 @@
+:root {
+  --fondo: #faf8f5;
+  --tarjeta: #ffffff;
+  --borde: #e2ddd5;
+  --texto: #2b2520;
+  --suave: #6b6259;
+  --acento: #c0392b;
+  --ok: #27ae60;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--fondo);
+  color: var(--texto);
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  line-height: 1.6;
+}
+
+.contenedor { max-width: 900px; margin: 0 auto; padding: 0 1rem; }
+
+header.barra { background: var(--tarjeta); border-bottom: 2px solid var(--acento); margin-bottom: 2rem; }
+header.barra .contenedor { display: flex; align-items: center; gap: 1.5rem; padding-top: 1rem; padding-bottom: 1rem; }
+header.barra h1 { font-size: 1.2rem; margin: 0; margin-right: auto; }
+header.barra a { color: var(--texto); text-decoration: none; font-size: .95rem; }
+header.barra a:hover { color: var(--acento); }
+
+footer.pie { margin-top: 3rem; padding: 1.5rem 0; border-top: 1px solid var(--borde); color: var(--suave); font-size: .85rem; }
+
+.tarjeta { background: var(--tarjeta); border: 1px solid var(--borde); border-radius: 10px; padding: 1rem 1.25rem; margin-bottom: .75rem; }
+.tarjeta h3 { margin: 0 0 .25rem; font-size: 1.05rem; }
+
+.fila { display: flex; align-items: center; gap: 1rem; }
+.fila > :first-child { margin-right: auto; }
+
+.dato { color: var(--suave); font-size: .9rem; margin: 0; }
+
+.formulario { background: var(--tarjeta); border: 1px solid var(--borde); border-radius: 10px; padding: 1.25rem; margin-bottom: 2rem; }
+.formulario h2 { margin: 0 0 1rem; font-size: 1.05rem; }
+.campos { display: flex; flex-wrap: wrap; gap: .75rem; align-items: flex-end; }
+label { display: flex; flex-direction: column; gap: .25rem; font-size: .85rem; color: var(--suave); }
+input, select { font: inherit; padding: .45rem .6rem; border: 1px solid var(--borde); border-radius: 6px; background: #fff; color: var(--texto); }
+
+button { font: inherit; cursor: pointer; padding: .45rem .9rem; border: 1px solid var(--borde); border-radius: 6px; background: var(--tarjeta); color: var(--texto); }
+button.principal { background: var(--acento); border-color: var(--acento); color: #fff; }
+button.borrar { color: var(--acento); border-color: var(--acento); }
+button:disabled { opacity: .5; cursor: default; }
+
+.mensaje { padding: .7rem 1rem; border-radius: 8px; margin-bottom: 1rem; font-size: .9rem; }
+.mensaje.error { background: #fdeceb; border: 1px solid var(--acento); color: #8e2a20; }
+.mensaje.ok { background: #eaf7ef; border: 1px solid var(--ok); color: #1d6b40; }
+
+.cargando { color: var(--suave); padding: 1rem 0; }
+
+a.enlace { color: var(--acento); }
